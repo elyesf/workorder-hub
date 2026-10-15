@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: workorders
+      POSTGRES_USER: workorders
+      POSTGRES_PASSWORD: workorders
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U workorders -d workorders"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/workorders
+      DB_USER: workorders
+      DB_PASSWORD: workorders
+      JWT_SECRET: ${JWT_SECRET:-docker-compose-demo-secret-replace-in-production}
+      CORS_ORIGINS: http://localhost:4200
+      DEMO_DATA: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  db-data:
