@@ -1,0 +1,12 @@
+{
+  "name": "workorder-hub-screenshots",
+  "private": true,
+  "type": "module",
+  "description": "Takes README screenshots of the running app (used by the Screenshots workflow)",
+  "scripts": {
+    "screenshots": "node screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.0"
+  }
+}

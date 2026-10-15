@@ -1,12 +1,20 @@
 # WorkOrder Hub
 
-![CI](https://github.com/elyesf/workorder-hub/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/elyesf/workorder-hub/actions/workflows/ci.yml/badge.svg) ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A full-stack web app for small field service teams (plumbing, heating, inspection) to create, assign and track work orders.
 
 I built it as a portfolio project to show how I work with **Angular and Spring Boot** end to end. It's the kind of internal tool many companies still run on spreadsheets and email.
 
 **Stack:** Java 21 · Spring Boot 3.5 · Spring Security (JWT) · Spring Data JPA · PostgreSQL · Flyway · Angular 20 · TypeScript · Docker · GitHub Actions
+
+## Screenshots
+
+Taken automatically from the running app (Docker Compose + Playwright) by the [Screenshots workflow](.github/workflows/screenshots.yml), so they always match the current code.
+
+| Work orders | Work order detail |
+|---|---|
+| ![Work order list](docs/screenshots/work-orders.png) | ![Work order detail](docs/screenshots/work-order-detail.png) |
 
 ## Features
 
