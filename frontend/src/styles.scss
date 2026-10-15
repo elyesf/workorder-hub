@@ -1,0 +1,85 @@
+:root {
+  --primary: #315597;
+  --primary-dark: #24416f;
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #1f2933;
+  --muted: #6b7280;
+  --border: #dde3ec;
+  --danger: #b42318;
+  --warn: #b54708;
+  --ok: #067647;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); }
+h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+a { color: var(--primary); }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+.card.narrow { max-width: 420px; margin: 3rem auto; }
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.empty { padding: 2rem 0; text-align: center; }
+.back { display: inline-block; margin-bottom: 1rem; }
+
+label { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+input, select, textarea {
+  font: inherit; font-weight: 400; padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border); border-radius: 6px; background: #fff;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); outline-offset: 0; }
+.field-error { color: var(--danger); font-weight: 400; }
+.alert { background: #fef3f2; color: var(--danger); border: 1px solid #fecdca; padding: 0.6rem 0.8rem; border-radius: 6px; }
+
+button, .button {
+  font: inherit; cursor: pointer; padding: 0.5rem 0.9rem; border-radius: 6px;
+  border: 1px solid var(--border); background: #fff; color: var(--text); text-decoration: none; display: inline-block;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.primary:hover:not(:disabled) { background: var(--primary-dark); }
+.danger { color: var(--danger); border-color: #fecdca; }
+.link { border: none; background: none; padding: 0; color: var(--primary); text-decoration: underline; }
+.link.light { color: #fff; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; }
+.span-2 { grid-column: span 2; }
+.actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.stat { display: flex; flex-direction: column; align-items: flex-start; text-align: left; background: var(--card); padding: 0.8rem 1rem; }
+.stat.active { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.stat-value { font-size: 1.5rem; font-weight: 700; }
+.stat-label { color: var(--muted); font-size: 0.85rem; }
+.stat.warn { border: 1px solid var(--border); border-radius: 6px; }
+.stat.warn .stat-value { color: var(--warn); }
+
+.search { width: 100%; margin-bottom: 1rem; }
+
+table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+th, td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+th { background: #eef2f8; font-weight: 600; }
+td.overdue { color: var(--danger); font-weight: 600; }
+td.overdue small { display: block; font-weight: 400; }
+
+.badge { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; background: #eef2f8; }
+.status-open { background: #e0eaff; color: var(--primary-dark); }
+.status-in_progress { background: #fef0c7; color: var(--warn); }
+.status-done { background: #dcfae6; color: var(--ok); }
+.status-cancelled { background: #f2f4f7; color: var(--muted); }
+.prio-high { background: #fee4e2; color: var(--danger); }
+.prio-medium { background: #fef0c7; color: var(--warn); }
+.prio-low { background: #f2f4f7; color: var(--muted); }
+
+.pager { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .span-2 { grid-column: span 1; }
+  table { display: block; overflow-x: auto; }
+}

@@ -1,0 +1,80 @@
+<div class="page-head">
+  <h1>Work orders</h1>
+  <a routerLink="/work-orders/new" class="button primary">New work order</a>
+</div>
+
+@if (stats(); as s) {
+  <div class="stats">
+    <button type="button" class="stat" [class.active]="status === null" (click)="filterByStatus(null)">
+      <span class="stat-value">{{ s.total }}</span>
+      <span class="stat-label">All</span>
+    </button>
+    @for (st of statuses; track st) {
+      <button type="button" class="stat" [class.active]="status === st" (click)="filterByStatus(st)">
+        <span class="stat-value">{{ s.byStatus[st] }}</span>
+        <span class="stat-label">{{ st | statusLabel }}</span>
+      </button>
+    }
+    <div class="stat warn">
+      <span class="stat-value">{{ s.overdue }}</span>
+      <span class="stat-label">Overdue</span>
+    </div>
+  </div>
+}
+
+<input
+  class="search"
+  type="search"
+  placeholder="Search title, customer or assignee"
+  [(ngModel)]="search"
+  (ngModelChange)="onSearch($event)"
+  aria-label="Search work orders"
+/>
+
+@if (error()) {
+  <p class="alert" role="alert">{{ error() }}</p>
+}
+
+@if (page(); as p) {
+  @if (p.items.length === 0) {
+    <p class="muted empty">No work orders found.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Customer</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Assignee</th>
+          <th>Due</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of p.items; track order.id) {
+          <tr>
+            <td><a [routerLink]="['/work-orders', order.id]">{{ order.title }}</a></td>
+            <td>{{ order.customer }}</td>
+            <td><span class="badge prio-{{ order.priority | lowercase }}">{{ order.priority }}</span></td>
+            <td><span class="badge status-{{ order.status | lowercase }}">{{ order.status | statusLabel }}</span></td>
+            <td>{{ order.assignee ?? '-' }}</td>
+            <td [class.overdue]="order.overdue">
+              {{ order.dueDate ? (order.dueDate | date: 'dd.MM.yyyy') : '-' }}
+              @if (order.overdue) { <small>overdue</small> }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (p.totalPages > 1) {
+      <nav class="pager" aria-label="Pages">
+        <button type="button" [disabled]="p.page === 0" (click)="goToPage(p.page - 1)">Previous</button>
+        <span>Page {{ p.page + 1 }} of {{ p.totalPages }}</span>
+        <button type="button" [disabled]="p.page + 1 >= p.totalPages" (click)="goToPage(p.page + 1)">Next</button>
+      </nav>
+    }
+  }
+} @else if (loading()) {
+  <p class="muted">Loading…</p>
+}

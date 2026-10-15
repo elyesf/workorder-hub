@@ -1,0 +1,82 @@
+<a routerLink="/work-orders" class="back">&larr; All work orders</a>
+
+<section class="card">
+  <div class="page-head">
+    <h1>{{ isNew ? 'New work order' : 'Work order #' + id() }}</h1>
+    @if (order(); as o) {
+      <span class="badge status-{{ o.status.toLowerCase() }}">{{ o.status | statusLabel }}</span>
+    }
+  </div>
+
+  @if (order(); as o) {
+    @if (o.allowedNextStatuses.length > 0) {
+      <div class="actions">
+        <span class="muted">Move to:</span>
+        @for (next of o.allowedNextStatuses; track next) {
+          <button type="button" (click)="moveTo(next)">{{ next | statusLabel }}</button>
+        }
+      </div>
+    }
+    <p class="muted small">
+      Created by {{ o.createdBy ?? 'unknown' }} on {{ o.createdAt | date: 'dd.MM.yyyy HH:mm' }}
+    </p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate class="grid">
+    <label class="span-2">
+      Title
+      <input formControlName="title" />
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <small class="field-error">Title is required.</small>
+      }
+    </label>
+
+    <label>
+      Customer
+      <input formControlName="customer" />
+      @if (form.controls.customer.touched && form.controls.customer.invalid) {
+        <small class="field-error">Customer is required.</small>
+      }
+    </label>
+
+    <label>
+      Location
+      <input formControlName="location" />
+    </label>
+
+    <label>
+      Priority
+      <select formControlName="priority">
+        @for (p of priorities; track p) {
+          <option [value]="p">{{ p }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Assignee
+      <input formControlName="assignee" />
+    </label>
+
+    <label>
+      Due date
+      <input type="date" formControlName="dueDate" />
+    </label>
+
+    <label class="span-2">
+      Description
+      <textarea rows="4" formControlName="description"></textarea>
+    </label>
+
+    @if (error()) {
+      <p class="alert span-2" role="alert">{{ error() }}</p>
+    }
+
+    <div class="span-2 actions">
+      <button type="submit" class="primary" [disabled]="saving()">{{ isNew ? 'Create' : 'Save changes' }}</button>
+      @if (!isNew && auth.isAdmin()) {
+        <button type="button" class="danger" (click)="remove()">Delete</button>
+      }
+    </div>
+  </form>
+</section>

@@ -1,0 +1,13 @@
+<header class="topbar">
+  <a routerLink="/" class="brand">WorkOrder Hub</a>
+  @if (auth.user(); as user) {
+    <div class="session">
+      <span>{{ user.displayName }} @if (auth.isAdmin()) { <small>(admin)</small> }</span>
+      <button type="button" class="link light" (click)="logout()">Log out</button>
+    </div>
+  }
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>
