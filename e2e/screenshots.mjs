@@ -10,6 +10,13 @@ await mkdir(outDir, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 
+// Make API errors visible in the workflow log instead of producing an empty screenshot
+page.on('response', (response) => {
+  if (response.url().includes('/api/') && response.status() >= 400) {
+    console.error(`API error ${response.status()} for ${response.url()}`);
+  }
+});
+
 try {
   await page.goto(`${baseUrl}/login`);
   await page.waitForSelector('form');
@@ -23,7 +30,9 @@ try {
   await page.screenshot({ path: `${outDir}work-orders.png`, fullPage: true });
 
   await page.click('text=Camera inspection of sewer line');
-  await page.waitForSelector('.actions button');
+  // Wait for the loaded order (status badge and filled title), not just the empty form
+  await page.waitForSelector('.page-head .badge');
+  await page.waitForFunction(() => document.querySelector('input[formcontrolname=title]')?.value !== '');
   await page.screenshot({ path: `${outDir}work-order-detail.png`, fullPage: true });
 
   console.log(`Screenshots saved to ${outDir}`);
