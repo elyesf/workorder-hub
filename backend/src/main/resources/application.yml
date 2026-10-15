@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: workorder-hub
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/workorders}
+    username: ${DB_USER:workorders}
+    password: ${DB_PASSWORD:workorders}
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema, Hibernate never changes it
+      ddl-auto: none
+  flyway:
+    enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:local-dev-secret-change-me-it-must-be-32-bytes-or-more}
+    ttl: 8h
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+  demo-data: ${DEMO_DATA:false}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
